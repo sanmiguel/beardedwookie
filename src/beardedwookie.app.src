@@ -1,0 +1,10 @@
+%%% -*- mode: erlang -*-
+
+{application, beardedwookie,
+    [{description,  "Simple todo-list service"},
+    {vsn, "0.0.1"},
+    {modules, [ bw_app ]},
+    {registered, [] },
+    {env, []},
+    {applications, [ kernel, stdlib, crypto, ranch, cowboy]},
+    {mod, {bw_app, []}}]}.
