@@ -1,0 +1,41 @@
+FORMAT: 1A
+HOST: http://www.google.com
+
+# bearded-wookie
+Tasks API is a *task management* service, which is nothing like a bearded wookie.
+
+
+## Notes Collection [/tasks]
+### List all Tasks [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, "task": "Jogging in park"
+        }, {
+          "id": 2, "task": "Pick-up posters from post-office"
+        }]
+
+### Create a Task [POST]
++ Request (application/json)
+
+        { "task": "Buy cheese and bread for breakfast." }
+
++ Response 201 (application/json)
+
+        { "id": 3, "task": "Buy cheese and bread for breakfast." }
+
+## Note [/tasks/{id}]
+A single Note object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve a Note [GET]
++ Response 200 (application/json)
+
+    + Body
+
+            { "id": 2, "task": "Pick-up posters from post-office" }
+
+### Remove a Note [DELETE]
++ Response 204
