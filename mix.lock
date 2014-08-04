@@ -5,7 +5,7 @@
   "exrm": {:package, "0.14.0"},
   "folsom": {:git, "https://github.com/boundary/folsom.git", "4824aec693c7f284363f19d999289952ec4ed586", [ref: "master"]},
   "genx": {:git, "git://github.com/yrashk/genx.git", "2166f78f6f588a732d159b193d983f4048d46088", [branch: "master"]},
-  "meck": {:git, "git://github.com/eproxus/meck", "dde759050eff19a1a80fd854d7375174b191665d", [tag: "0.8.2"]},
+  "meck": {:git, "git://github.com/eproxus/meck.git", "dde759050eff19a1a80fd854d7375174b191665d", [tag: "0.8.2"]},
   "poolboy": {:git, "git://github.com/devinus/poolboy.git", "1d97facfd991f2606ae1d431cb98e624514ed9de", [branch: "master"]},
   "proper": {:git, "git://github.com/manopapad/proper.git", "043f68f2102f366abaa5c5dbf2b55b833d7e90bd", [tag: "master"]},
   "protobuffs": {:git, "git://github.com/basho/erlang_protobuffs.git", "f90e025518bdfbe48d6303c6aa5101297c56fb7b", [tag: "0.8.1"]},

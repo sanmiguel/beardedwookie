@@ -63,5 +63,3 @@ init([]) ->
     {ok, {SupFlags, Children}}.
 
 %%% Internal functions
-
-

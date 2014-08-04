@@ -16,8 +16,21 @@
       StartArgs :: term(),
       State :: any().
 start(_StartType, _StartArgs) ->
-    bw_sup:start_link().
+    SizeArgs = [{size, 10},
+                {max_overflow, 20}],
+
+    WorkerArgs = [{hostname, "localhost"},
+                  {port, 8099},
+                  {ping_every, 50000},
+                  {options, [{auto_reconnect, true}]}],
+
+    PoolName = application:get_env(beardedwookie, riak_poolname, riak_pool),
+
+    riakc_poolboy:start_pool(PoolName, SizeArgs, WorkerArgs),
+
+    {ok, Sup} = bw_sup:start_link(),
+    {ok, Sup, [PoolName]}.
 
 -spec stop(State :: any()) -> ok.
-stop(_State) ->
-    ok.
+stop([PoolName]) ->
+    riakc_poolboy:stop_pool(PoolName).

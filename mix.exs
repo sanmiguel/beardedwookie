@@ -12,13 +12,15 @@ defmodule BeardedWookie.Mixfile do
 
   def application do
     [ registered: [],
-      applications: [:cowboy],
+      applications: [:cowboy, :riakc_poolboy],
       mod: { :bw_app, [] } ]
   end
 
   defp deps do
     [
-      {:cowboy, github: "extend/cowboy", tag: "0.9.0"},
+      {:meck, github: "eproxus/meck", tag: "0.8.2", override: true},
+      {:riakc_poolboy, github: "puzza007/riakc_poolboy", branch: "master"},
+      {:cowboy, github: "extend/cowboy", tag: "1.0.0"},
       {:exrm, "~> 0.14.0"}]
   end
 end
