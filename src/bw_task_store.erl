@@ -10,7 +10,8 @@
 
 -define(TIMEOUT, 5000).
 
--define(TASKPOOL, bw_riak_pool).
+%% TODO This shouldn't be in a macro like this
+-define(TASKPOOL, application:get_env(beadedwookie, riak_poolname, bw_riak_pool)).
 -define(TASKBUCKET, <<"task_bucket">>).
 
 -type id() :: binary().

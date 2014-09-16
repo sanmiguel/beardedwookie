@@ -16,17 +16,15 @@
       StartArgs :: term(),
       State :: any().
 start(_StartType, _StartArgs) ->
-    SizeArgs = [{size, 10},
-                {max_overflow, 20}],
 
-    WorkerArgs = [{hostname, "localhost"},
-                  {port, 8099},
-                  {ping_every, 50000},
-                  {options, [{auto_reconnect, true}]}],
+    PoolName = application:get_env(beardedwookie, riak_poolname, bw_riak_pool),
 
-    PoolName = application:get_env(beardedwookie, riak_poolname, riak_pool),
+    SizeArgs = [{size, 5}, {max_overflow, 10}],
+    PoolboyOpts = [{auto_reconnect, true}],
+    WorkerArgs = [{hostname, "localhost"}, {port, 8087},
+                  {options, PoolboyOpts}, {ping_every, 50000}],
 
-    riakc_poolboy:start_pool(PoolName, SizeArgs, WorkerArgs),
+    {ok, _Pid} = riakc_poolboy:start_pool(PoolName, SizeArgs, WorkerArgs),
 
     {ok, Sup} = bw_sup:start_link(),
     {ok, Sup, [PoolName]}.

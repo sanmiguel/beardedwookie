@@ -6,5 +6,5 @@
     {modules, [ bw_app ]},
     {registered, [] },
     {env, []},
-    {applications, [ kernel, stdlib, crypto, ranch, cowboy, riakc_poolboy]},
+    {applications, [ kernel, stdlib, crypto, ranch, jsx, cowboy, riakc_poolboy]},
     {mod, {bw_app, []}}]}.
