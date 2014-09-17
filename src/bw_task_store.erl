@@ -3,6 +3,7 @@
 -export([init/1]).
 
 -export([insert/2]).
+-export([list/0]).
 -export([create/1]).
 -export([read/1]).
 -export([update/2]).
@@ -13,9 +14,6 @@
 %% TODO This shouldn't be in a macro like this
 -define(TASKPOOL, application:get_env(beadedwookie, riak_poolname, bw_riak_pool)).
 -define(TASKBUCKET, <<"task_bucket">>).
-
--type id() :: binary().
--type task() :: tuple().
 
 -spec init(Args :: list(term())) ->
     {ok, pid()}
@@ -28,18 +26,23 @@ init(_Args) ->
                   {options, PoolboyOpts}, {ping_every, 50000}],
     {ok, _Pid} = riakc_poolboy:start_pool(PoolName, SizeArgs, WorkerArgs).
 
--spec create(task()) ->
-    {ok, id()}
+-spec list() ->
+    {ok, list(bw_task:id())}
+    | {error, Reason :: term()}.
+list() ->
+    riakc_poolboy:list_keys(?TASKPOOL, ?TASKBUCKET, ?TIMEOUT).
+
+-spec create(bw_task:props()) ->
+    {ok, bw_task:id()}
     | {error, Reason :: term()}.
 create(Task) ->
-    RawUUID = uuid:get_v4(),
-    ID = uuid:uuid_to_string(RawUUID, binary_standard),
+    ID = bw_task:id(),
     case insert(ID, Task) of
         ok -> {ok, ID};
         {error,_}=E -> E
     end.
 
--spec insert(id(), task()) ->
+-spec insert(bw_task:id(), bw_task:props()) ->
     ok
     | {error, Reason :: term()}.
 insert(ID, TaskProps) when is_binary(ID) ->
@@ -47,8 +50,8 @@ insert(ID, TaskProps) when is_binary(ID) ->
     Obj = riakc_obj:new(?TASKBUCKET, ID, Task),
     riakc_poolboy:put(?TASKPOOL, Obj, ?TIMEOUT).
 
--spec read(id()) ->
-    {ok, id(), task()}
+-spec read(bw_task:id()) ->
+    {ok, bw_task:id(), bw_task:props()}
     | {error, Reason :: term()}.
 read(ID) ->
     case riakc_poolboy:get(?TASKPOOL, ?TASKBUCKET, ID, ?TIMEOUT) of
@@ -61,13 +64,13 @@ read(ID) ->
             Err
     end.
 
--spec update(id(), task()) ->
-    {ok, id(), task()}
+-spec update(bw_task:id(), bw_task:props()) ->
+    {ok, bw_task:id(), bw_task:props()}
     | {error, Reason :: term()}.
 update(ID, Task) ->
     {error, unimplemented}.
 
--spec delete(id()) ->
+-spec delete(bw_task:id()) ->
     ok
     | {error, Reason :: term()}.
 delete(ID) ->
