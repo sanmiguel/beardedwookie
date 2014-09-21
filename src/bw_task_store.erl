@@ -1,7 +1,5 @@
 -module(bw_task_store).
 
--export([init/1]).
-
 -export([insert/2]).
 -export([list/0]).
 -export([create/1]).
@@ -14,17 +12,6 @@
 %% TODO This shouldn't be in a macro like this
 -define(TASKPOOL, application:get_env(beadedwookie, riak_poolname, bw_riak_pool)).
 -define(TASKBUCKET, <<"task_bucket">>).
-
--spec init(Args :: list(term())) ->
-    {ok, pid()}
-    | {error, Reason :: term()}.
-init(_Args) ->
-    PoolName = ?TASKPOOL,
-    SizeArgs = [{size, 5}, {max_overflow, 10}],
-    PoolboyOpts = [{auto_reconnect, true}],
-    WorkerArgs = [{hostname, "localhost"}, {port, 8087},
-                  {options, PoolboyOpts}, {ping_every, 50000}],
-    {ok, _Pid} = riakc_poolboy:start_pool(PoolName, SizeArgs, WorkerArgs).
 
 -spec list() ->
     {ok, list(bw_task:id())}
