@@ -93,7 +93,7 @@ delete_resource(Req0, #context{}=Context0) ->
 display(Req0, #context{}=Context) ->
 
     {TaskID, Req1} = cowboy_req:binding(task_id, Req0),
-    Task = bw_task_store:read(TaskID),
+    {ok, Task} = bw_task_store:read(TaskID),
 
     JSON = jsx:encode(Task),
     {JSON, Req1, Context}.
